@@ -28,7 +28,16 @@ contract Staker {
   // After some `deadline` allow anyone to call an `execute()` function
   //  It should either call `exampleExternalContract.complete{value: address(this).balance}()` to send all the value
 
-
+  modifier deadlineReached( bool requireReached ) {
+    uint256 timeRemaining = timeLeft();
+    if( requireReached ) {
+      require(timeRemaining == 0, "Deadline is not reached yet");
+    } else {
+      require(timeRemaining > 0, "Deadline is already reached");
+    }
+    _;
+  }
+  
   // if the `threshold` was not met, allow everyone to call a `withdraw()` function
 
 
